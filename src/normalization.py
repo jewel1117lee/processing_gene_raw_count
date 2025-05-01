@@ -97,7 +97,7 @@ def calc_cpm(
     factor = 1_000_000 / total_reads
     return read_count * factor
 
-def compute_cpm_df(
+def compute_cpm(
     df: pd.DataFrame,
     sample_cols: Optional[List[str]] = None
 ) -> pd.DataFrame:
@@ -129,3 +129,6 @@ def compute_cpm_df(
         df_out[f"{col}_CPM"] = calc_cpm(df[col].astype(float), total)
 
     return df_out
+
+if __name__ == "__main__":
+    main()

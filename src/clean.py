@@ -1,4 +1,5 @@
 import pandas as pd
+from typing import List, Optional
 from openpyxl import Workbook
 
 def clean_up(df, gene_name_col):
@@ -28,7 +29,7 @@ def filter_noncoding(df, protein_coding, gene_name_col, protein_gene_name_col):
     # Return only matching rows
     return df[mask].copy()
 
-def filter_zeros(df: pd.DataFrame, subset_cols: list[str] | None = None) -> pd.DataFrame:
+def filter_zeros(df: pd.DataFrame, subset_cols: Optional[List[str]] = None) -> pd.DataFrame:
     """
     Remove rows from df that contain a zero in any of the specified columns.
 
@@ -58,22 +59,15 @@ def filter_zeros(df: pd.DataFrame, subset_cols: list[str] | None = None) -> pd.D
 
     return df_clean.loc[mask].reset_index(drop=True)
     
+def dropna_from_lists(data):
+    """
+    Given a list of lists, return a new list of lists
+    where all `NaN` values have been removed.
+    """
+    return [
+        [x for x in subgroup if x == x]   # `NaN != NaN`, so this drops NaNs
+        for subgroup in data
+    ]
 
 if __name__ == "__main__":
-    gene_counts_path = "data/table_raw_count_for_all_samples_with_txID_gene_name.xlsx"
-    protein_coding_path = "data/protein coding gene.tsv" 
-
-    df1 = pd.read_excel(gene_counts_path)
-    protein_coding = pd.read_csv(protein_coding_path, sep='\t')
-
-    df1['gene_name'] = clean_up(df1['gene_name'])
-    print(df1)
-
-    df1 = df1[df1['gene_name'].isin(protein_coding['gene_name'])]
-    print(df1)
-
-    df1 = remove_all_zeros(df1, axis='columns')
-    print(df1)
-
-    output_path = "data/cleaned_counts.csv"
-    df1.to_csv(output_path, index=False)
+    main()
