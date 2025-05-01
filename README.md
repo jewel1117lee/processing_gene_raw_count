@@ -1,6 +1,6 @@
 # Processing Raw Counts
 
-A simple end-to-end pipeline for RNA-seq count processing, normalization, differential expression, and downstream comparison to published gene lists. Built in Python, it organizes reusable modules under `src/` and provides a single `main.py` driver.
+A simple end-to-end pipeline for RNA-seq count processing, normalization, differential expression, and downstream comparison to published gene lists. Built in Python, it organizes reusable modules under `src/` and provides a single `main.py` as a EXAMPLE driver.
 
 ---
 
@@ -38,7 +38,7 @@ A simple end-to-end pipeline for RNA-seq count processing, normalization, differ
     - normalization.py ← compute_rpkm, compute_cpm
     - analysis.py ← match_database, ttest, make_box_figure, zip_data
     - deg_analysis.py ← run_deg_analysis
-  - main.py ← entry-point driver script
+  - main.py ← entry-point driver script (*** AN EXAMPLE ***)
 
 ## Usage
 I ran it with python main.py in terminal, but original code is in jupyter notebook which is a lot easier to use for bioinformatics with a lot of calling the functions with different data and graphing
