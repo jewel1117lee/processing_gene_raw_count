@@ -59,6 +59,7 @@ def run_deg_analysis(
     res = stat_res.results_df
 
     res_df = gene_name_df.merge(res, on= gene_id_col, how="left")
-    print(res_df)
     return(res_df)
 
+if __name__ == "__main__":
+    main()

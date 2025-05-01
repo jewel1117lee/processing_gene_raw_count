@@ -29,50 +29,48 @@ def calc_rpkm(read_count, gene_len, total_reads):
 
 def compute_rpkm(
     df: pd.DataFrame,
+    gene_id_cols: Union[str, List[str]],
     gene_length_col: str = 'gene_length',
     sample_cols: Optional[List[str]] = None
 ) -> pd.DataFrame:
     """
-    Compute RPKM for each sample column in `df`.
+    Returns a new DataFrame with:
+      - the gene identifier column(s)
+      - one <sample>_RPKM column per sample in sample_cols (or auto-detected)
 
     Args:
-        df: DataFrame containing raw counts and a gene-length column.
-        gene_length_col: Name of the column with gene lengths (bp).
-        sample_cols: List of columns to treat as count data. 
-                     If None, all numeric cols except `gene_length_col` are used.
+        df: Original DataFrame with counts and lengths.
+        gene_id_cols: Column name or list of column names to carry over (e.g. 'gene_id').
+        gene_length_col: Column holding gene lengths (bp).
+        sample_cols: List of count columns. If None, auto-uses all numeric columns
+                     except gene_length_col and gene_id_cols.
 
     Returns:
-        A new DataFrame with additional columns "<sample>_RPKM" for each sample.
+        New DataFrame with only the ID column(s) and the RPKM columns.
     """
-    # Copy to avoid mutating original
-    df_out = df.copy()
+    # Normalize inputs
+    if isinstance(gene_id_cols, str):
+        gene_id_cols = [gene_id_cols]
     
-    # Ensure gene_length exists
-    if gene_length_col not in df_out:
-        raise KeyError(f"Column '{gene_length_col}' not found in DataFrame.")
-    
-    # Determine which columns to process
+    # Detect sample columns if not provided
     if sample_cols is None:
-        # pick numeric columns except gene_length_col
         sample_cols = [
-            c for c in df_out.columns
-            if c != gene_length_col and pd.api.types.is_numeric_dtype(df_out[c])
+            c for c in df.columns 
+            if c not in gene_id_cols + [gene_length_col]
+            and pd.api.types.is_numeric_dtype(df[c])
         ]
-    else:
-        # validate user-specified columns
-        missing = [c for c in sample_cols if c not in df_out.columns]
-        if missing:
-            raise KeyError(f"Sample columns not found: {missing}")
     
-    # vector of gene lengths
-    gene_len = df_out[gene_length_col].astype(float)
+    # Prepare output
+    out = df[gene_id_cols].copy()
+    gene_len = df[gene_length_col].astype(float)
     
-    # compute RPKM per sample
+    # Compute RPKM per sample and add to out
     for col in sample_cols:
-        total = df_out[col].sum()
-        df_out[f"{col}_RPKM"] = calc_rpkm(df_out[col].astype(float), gene_len, total)
+        total = df[col].sum()
+        rpkm = calc_rpkm(df[col].astype(float), gene_len, total)
+        out[f"{col}_RPKM"] = rpkm
     
-    return df_out
+    return out
 
 
 def calc_cpm(

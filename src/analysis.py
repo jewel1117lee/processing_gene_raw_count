@@ -3,14 +3,14 @@
 
 import pandas as pd
 import numpy as np
-from scipy import stats
+import scipy
 import matplotlib.pyplot as plt
 import os
 from openpyxl import Workbook
-from clean import clean_up, filter_noncoding, filter_zeros, dropna_from_lists
+from src.clean import capitalize_gene, filter_noncoding, filter_zeros, dropna_from_lists
 
 
-def match_database(df, gene_names, values, comp_df, comp_col, protein_coding_df):
+def match_database(df, gene_names, values, comp_df, comp_col):
     """
     Match genes in gene_names to comp_df[comp_col] after filtering protein-coding genes.
 
@@ -19,15 +19,14 @@ def match_database(df, gene_names, values, comp_df, comp_col, protein_coding_df)
         values (list of numeric): Corresponding values for each gene (e.g., log-RPKM).
         comp_df (pd.DataFrame): Published data containing a column comp_col with gene names.
         comp_col (str): Column name in comp_df to match against gene_names.
-        protein_coding_df (pd.DataFrame): DataFrame with 'gene_name' column listing protein-coding genes.
 
     Returns:
         tuple: (matched_genes, matched_values, unmatched_genes, unmatched_values, non_matched_in_pub)
     """
     # Prepare published gene list (uppercase)
-    pub_genes = clean_up(comp_df,comp_col)[comp_col]
+    pub_genes = capitalize_gene(comp_df,comp_col)[comp_col]
     
-    df_new = clean_up(df, gene_names)
+    df_new = capitalize_gene(df, gene_names)
 
     df_gene_value = df_new[[gene_names, values]]
 
@@ -157,6 +156,3 @@ def zip_data(data, col_name=None, output_file=None):
         data_all.to_excel(output_file, index=False)
 
     return(data_all)
-
-if __name__ == "__main__":
-    main()

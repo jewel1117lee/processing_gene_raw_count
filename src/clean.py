@@ -2,7 +2,7 @@ import pandas as pd
 from typing import List, Optional
 from openpyxl import Workbook
 
-def clean_up(df, gene_name_col):
+def capitalize_gene(df, gene_name_col):
     """
     """
     df = df.copy()
@@ -68,6 +68,3 @@ def dropna_from_lists(data):
         [x for x in subgroup if x == x]   # `NaN != NaN`, so this drops NaNs
         for subgroup in data
     ]
-
-if __name__ == "__main__":
-    main()
