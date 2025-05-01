@@ -26,21 +26,20 @@ A simple end-to-end pipeline for RNA-seq count processing, normalization, differ
 
 ## Directory Structure
 
-"""
-processing_raw_count/ 
-    data/
-        raw_count_file
-        protein_coding_file (optional)
-        transcript_length_file(optional)
-    result/ ← output folder for Excel & plots
-    src/
-        init.py
-        clean.py ← filter_noncoding, filter_zeros, dropna_from_lists
-        normalization.py ← compute_rpkm, compute_cpm
-        analysis.py ← match_database, ttest, make_box_figure, zip_data
-        deg_analysis.py ← run_deg_analysis
-        main.py ← entry-point driver script
-"""
+- processing_raw_count/
+  - data/
+    - raw_count_file
+    - protein_coding_file (optional)
+    - transcript_length_file (optional)
+  - result/ ← output folder for Excel & plots
+  - src/
+    - __init__.py
+    - clean.py ← filter_noncoding, filter_zeros, dropna_from_lists
+    - normalization.py ← compute_rpkm, compute_cpm
+    - analysis.py ← match_database, ttest, make_box_figure, zip_data
+    - deg_analysis.py ← run_deg_analysis
+  - main.py ← entry-point driver script
+
 ## Usage
 I ran it with python main.py in terminal, but original code is in jupyter notebook which is a lot easier to use for bioinformatics with a lot of calling the functions with different data and graphing
 
