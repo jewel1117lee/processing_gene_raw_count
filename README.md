@@ -44,24 +44,23 @@ A simple end-to-end pipeline for RNA-seq count processing, normalization, differ
 I ran it with python main.py in terminal, but original code is in jupyter notebook which is a lot easier to use for bioinformatics with a lot of calling the functions with different data and graphing
 
 ## Pipeline Overview
-The main.py has a much better explanation, but overall my process is 
-1. Read in the data
-2. Clean the data
-    2a. filter noncoding genes
-3. Produce RPKM
-    3a. clean the data again
-    3b. run the function for RPKM
-    3c. export
-4. Produce DEG analysis
-    4a. clean the data/ normalization
-    4b. run the function for DEG analysis
-    4c. export 
-5. Compare to data publish online
-    5a. clean the data that is published online
-    5b. fun the function to compare
-    5c. run statistical test, such as t-test
-    5d. graph
-    5e. export
+1. Read in the data  
+2. Clean the data  
+   1. Filter noncoding genes  
+3. Produce RPKM  
+   1. Clean the data again  
+   2. Run the RPKM function  
+   3. Export results  
+4. Produce DEG analysis  
+   1. Clean and normalize the data  
+   2. Run the DEG analysis function  
+   3. Export results  
+5. Compare to published data  
+   1. Clean the published data  
+   2. Run the comparison function  
+   3. Run statistical test (e.g., t-test)  
+   4. Generate graphs  
+   5. Export comparison results  
 
 ## Module Reference
 src/clean.py
